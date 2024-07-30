@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/github/forks/leesinz/Athena?style=social">
     </a>
 
-![image-20240730151807137](readme/image-20240730151807137.png)
+![image-20240730151807137](README/image-20240730151807137.png)
 
 ## WHAT
 
@@ -131,7 +131,7 @@ notify:
 
 ### 运行逻辑
 
-![draw](readme/draw.png)
+![draw](README/draw.png)
 
 ### 快速开始
 
@@ -166,11 +166,11 @@ while True:
 
 安装完需要的库，配置好config.yaml后，即可开始运行。
 
-![image-20240730174829661](readme/image-20240730174829661.png)
+![image-20240730174829661](README/image-20240730174829661.png)
 
 推送内容如下：
 
-![image-20240730174957206](readme/image-20240730174957206.png)
+![image-20240730174957206](README/image-20240730174957206.png)
 
 ### 扩展
 
