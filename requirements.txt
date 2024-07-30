@@ -1,0 +1,8 @@
+art==6.2
+mysql==0.0.3
+mysql-connector-python==9.0.0
+PyYAML==6.0.1
+requests==2.32.3
+beautifulsoup4==4.12.3
+tqdm==4.66.4
+DingtalkChatbot==1.5.7

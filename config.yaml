@@ -1,0 +1,32 @@
+github:
+  token: ""
+
+collectors: []
+
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  database: ""
+  username: ""
+  password: ""
+
+notify:
+  wxwork:
+    enable: true
+    key:
+
+  dingtalk:
+    enable: false
+    access_token:
+    secret:
+
+  email:
+    enable: false
+    smtp_server:
+    smtp_port:
+    username:
+    password:
+    from:
+    to:
+      -
+      -
