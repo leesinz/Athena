@@ -8,7 +8,6 @@ from .collector_oscs import OSCSCollector
 from .collector_ali import AliCollector
 from .collector_qax import QAXCollector
 from .collector_threatbook import ThreatBookCollector
-from .collector_seebug import SeebugCollector
 from .collector_github import GitHubCollector
 
 
@@ -22,7 +21,7 @@ class VulnerabilityManager:
             'Afrog': AfrogCollector,
             'PacketStorm': PacketStormCollector,
             # chrome.driver starts frequently, which may cause memory issues and eventually lead to code termination
-             'Seebug': SeebugCollector,
+            # 'Seebug': SeebugCollector,
             'Github': GitHubCollector,
             'OSCS': OSCSCollector,
             'Ali': AliCollector,
