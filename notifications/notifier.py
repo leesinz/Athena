@@ -1,7 +1,7 @@
 from config import cfg
-from dingtalk import dingtalk_notification
-from wxwork import wxwork_notification
-from email import email_notification
+from notifications.dingtalk import dingtalk_notification
+from notifications.wxwork import wxwork_notification
+from notifications.email import email_notification
 
 
 def send_notifications(subject, message, content):
