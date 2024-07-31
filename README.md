@@ -172,6 +172,10 @@ while True:
 
 ![image-20240730174957206](README/image-20240730174957206.png)
 
+**注意：** 只会推送severity为high及以上的漏洞，但是所有漏洞均会存入数据库：
+
+![image-20240731172901942](README/image-20240731172901942.png)
+
 ### 扩展
 
 如需扩展其他漏洞源数据，实现base_collector.py中的VulnerabilityCollector类即可，漏洞信息的字段如下：
