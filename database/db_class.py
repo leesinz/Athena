@@ -47,7 +47,7 @@ class MySQLDatabase:
             print("Failed to connect to the database")
             return []
 
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         results = []
         try:
             cursor.execute(query, params)
@@ -57,7 +57,7 @@ class MySQLDatabase:
         cursor.close()
         return results
 
-    def insert_vulnerability(self,  data):
+    def insert_vulnerability(self, data):
         query = f"""
         INSERT INTO vulnerabilities (name, cve, severity, description, source, date, link)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
@@ -75,6 +75,6 @@ class MySQLDatabase:
         ))
 
     def check_vulnerability_exists(self, key, value):
-        query = f"SELECT EXISTS(SELECT 1 FROM vulnerabilities WHERE {key}=%s)"
+        query = f"SELECT EXISTS(SELECT 1 FROM vulnerabilities WHERE {key}=%s) as exists_flag"
         result = self.fetch_results(query, (value,))
-        return result[0][0] if result else False
+        return result[0]['exists_flag'] if result else False

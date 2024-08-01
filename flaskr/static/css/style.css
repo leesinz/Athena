@@ -1,0 +1,329 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #f0f0f0, #ffffff);
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+#search-box {
+    margin-left: auto;
+    margin-right: 20px;
+    padding: 5px;
+    font-size: 1em;
+}
+
+.charts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.chart-container {
+    width: 45%;
+    margin-bottom: 20px;
+}
+
+.chart {
+    width: 100%;
+    height: 300px;
+}
+
+.chart-label {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.latest-vulnerabilities {
+    margin: 40px 0;
+}
+
+.latest-vulnerabilities h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#vulnerability-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+#vulnerability-table th, #vulnerability-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+#vulnerability-table th {
+    background-color: #f9f9f9;
+}
+
+#vulnerability-table td a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#vulnerability-table td a:hover {
+    text-decoration: underline;
+}
+
+.tooltip-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.tooltip-cell:not([title]) {
+    pointer-events: none;
+}
+
+.tooltip-cell[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 10;
+    white-space: pre-wrap;
+    max-width: 300px;
+    top: 100%;
+    left: 0;
+    transform: translateY(5px);
+}
+
+.tooltip-cell[title]:hover::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #333;
+    top: 100%;
+    left: 10px;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+}
+
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    margin-top: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    margin-top: 10px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-container form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 1em;
+}
+
+.search-container select {
+    padding: 8px;
+    font-size: 1em;
+}
+
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+
+.pagination span {
+    font-weight: bold;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* 数据表格样式 */
+#vulnerability-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+#vulnerability-table th, #vulnerability-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+#vulnerability-table th {
+    background-color: #f9f9f9;
+}
+
+#vulnerability-table td a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#vulnerability-table td a:hover {
+    text-decoration: underline;
+}
+
+/* 工具提示样式 */
+.tooltip-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.tooltip-cell:not([title]) {
+    pointer-events: none;
+}
+
+.tooltip-cell[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 10;
+    white-space: pre-wrap;
+    max-width: 300px;
+    top: 100%;
+    left: 0;
+    transform: translateY(5px);
+}
+
+.tooltip-cell[title]:hover::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #333;
+    top: 100%;
+    left: 10px;
+}
+
+/* 搜索框和每页条数选择样式 */
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-container form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 1em;
+}
+
+.search-container select {
+    padding: 8px;
+    font-size: 1em;
+}
+
+/* 分页样式 */
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+
+.pagination span {
+    font-weight: bold;
+}

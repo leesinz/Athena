@@ -42,7 +42,7 @@ class GitHubCollector(VulnerabilityCollector):
                 continue
 
             vulnerability = {
-                'name': '',
+                'name': cves,
                 'cve': cves,
                 'severity': severity,
                 'description': desc,

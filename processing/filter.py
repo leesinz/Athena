@@ -3,7 +3,7 @@ from tqdm import tqdm
 from config import cfg
 from database.db_class import MySQLDatabase
 from collectors.manager import VulnerabilityManager
-from notifications.notifier import send_notifications
+from notifications.notifier import send_realtime_notifications
 
 
 def gather_data():
@@ -46,6 +46,6 @@ def filter_high_risk_vuls(vulnerabilities):
                 if value:
                     content += f"{key}: {value}\n"
             content = content.rstrip("\n")
-            send_notifications("vulnerability notifier", "", content)
+            send_realtime_notifications(content)
     print(f"High risk vulnerabilities found: {high_risk_num}\n")
 

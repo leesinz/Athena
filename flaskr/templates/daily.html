@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Athena - Daily Vulnerability Dashboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .chart-container {
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .chart-label {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .chart-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .latest-vulnerabilities {
+            margin-top: 20px;
+        }
+        .vuln-count {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Athena Daily Vulnerability Dashboard</h1>
+            </div>
+        </header>
+        <div class="chart-row">
+            <div class="chart-container">
+                <div id="cve-chart" class="chart"></div>
+                <div class="chart-label">CVE Proportion</div>
+            </div>
+            <div class="chart-container">
+                <div id="severity-chart" class="chart"></div>
+                <div class="chart-label">Severity Proportion</div>
+            </div>
+            <div class="chart-container">
+                <div id="source-chart" class="chart"></div>
+                <div class="chart-label">Source Proportion</div>
+            </div>
+        </div>
+        <div class="latest-vulnerabilities">
+            <h2>Vulnerabilities on {{ date }}</h2>
+            <div class="vuln-count">Total Vulnerabilities: {{ vuln_count }}</div>
+            <table id="vulnerability-table" class="display">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>Description</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vulnerability in vulnerabilities %}
+                    <tr>
+                        <td class="tooltip-cell" title="{{ vulnerability.name }}">{{ vulnerability.name }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.cve }}">{{ vulnerability.cve }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.severity }}">{{ vulnerability.severity }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.description }}">{{ vulnerability.description }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.source }}">{{ vulnerability.source }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.date }}">{{ vulnerability.date }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.link }}"><a href="{{ vulnerability.link }}" target="_blank">Link</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+
+    var cveChart = echarts.init(document.getElementById('cve-chart'));
+    var severityChart = echarts.init(document.getElementById('severity-chart'));
+    var sourceChart = echarts.init(document.getElementById('source-chart'));
+
+    var cveData = {{ cve_data|tojson }};
+    var severityData = {{ severity_data|tojson }};
+    var sourceData = {{ source_data|tojson }};
+
+    cveChart.setOption({
+        title: { text: 'CVE Proportion' },
+        tooltip: { trigger: 'item' },
+        series: [{
+            name: 'CVE Proportion',
+            type: 'pie',
+            data: [
+                { value: cveData.cve_count, name: 'CVE' },
+                { value: cveData.total - cveData.cve_count, name: 'Non-CVE' }
+            ]
+        }]
+    });
+
+    severityChart.setOption({
+        title: { text: 'Severity Proportion' },
+        tooltip: { trigger: 'item' },
+        series: [{
+            name: 'Severity Proportion',
+            type: 'pie',
+            data: [
+                { value: severityData.critical_count, name: 'Critical' },
+                { value: severityData.high_count, name: 'High' },
+                { value: severityData.medium_count, name: 'Medium' },
+                { value: severityData.low_count, name: 'Low' },
+                { value: severityData.none_count, name: 'None' }
+            ]
+        }]
+    });
+
+    var sourceNames = sourceData.map(item => item.source);
+    var sourceCounts = sourceData.map(item => item.count);
+    sourceChart.setOption({
+        title: { text: 'Source Proportion' },
+        tooltip: { trigger: 'item' },
+        xAxis: {
+            type: 'category',
+            data: sourceNames,
+            axisLabel: {
+                interval: 0,
+                rotate: 45
+            }
+        },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: sourceCounts }]
+    });
+    </script>
+
+</body>
+</html>

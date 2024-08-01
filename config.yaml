@@ -21,7 +21,6 @@ notify:
     secret:
 
   email:
-    enable: false
     smtp_server:
     smtp_port:
     username:

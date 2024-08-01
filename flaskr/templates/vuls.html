@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Athena - Vulnerability List</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .container {
+            width: 90%;
+            margin: auto;
+            position: relative;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            font-size: 1em;
+        }
+
+        .search-container select {
+            padding: 8px;
+            font-size: 1em;
+        }
+
+        .per-page-select {
+            margin-left: auto;
+            font-size: 0.8em;
+        }
+
+        #vulnerability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #vulnerability-table th, #vulnerability-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        #vulnerability-table th {
+            background-color: #f9f9f9;
+        }
+
+        #vulnerability-table td a {
+            text-decoration: none;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        #vulnerability-table td a:hover {
+            text-decoration: underline;
+        }
+
+        .tooltip-cell {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+
+        .tooltip-cell:not([title]) {
+            pointer-events: none;
+        }
+
+        .tooltip-cell[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 10;
+            white-space: pre-wrap;
+            max-width: 300px;
+            top: 100%;
+            left: 0;
+            transform: translateY(5px);
+        }
+
+        .tooltip-cell[title]:hover::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #333;
+            top: 100%;
+            left: 10px;
+        }
+
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination span {
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Athena Vulnerability List</h1>
+            </div>
+        </header>
+        <div class="search-container">
+            <h3>Total vulnerabilities: {{ total }}</h3>
+            <form method="get" action="{{ url_for('vuls') }}">
+                <input type="text" name="search" placeholder="Search vulnerabilities" value="{{ request.args.get('search', '') }}">
+                <select name="per_page" class="per-page-select" onchange="this.form.submit()">
+                    <option value="10" {% if per_page == 10 %}selected{% endif %}>10 entries</option>
+                    <option value="20" {% if per_page == 20 %}selected{% endif %}>20 entries</option>
+                    <option value="50" {% if per_page == 50 %}selected{% endif %}>50 entries</option>
+                </select>
+            </form>
+        </div>
+        <div class="latest-vulnerabilities">
+            <table id="vulnerability-table" class="display">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>Description</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vulnerability in vulnerabilities %}
+                    <tr>
+                        <td class="tooltip-cell" title="{{ vulnerability.name }}">{{ vulnerability.name }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.cve }}">{{ vulnerability.cve }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.severity }}">{{ vulnerability.severity }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.description }}">{{ vulnerability.description }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.source }}">{{ vulnerability.source }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.date }}">{{ vulnerability.date }}</td>
+                        <td class="tooltip-cell" title="{{ vulnerability.link }}"><a href="{{ vulnerability.link }}" target="_blank">Link</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('vuls', page=page-1, per_page=per_page, search=request.args.get('search', '')) }}">Previous</a>
+            {% endif %}
+            {% for p in range(1, total // per_page + 2) %}
+                <a href="{{ url_for('vuls', page=p, per_page=per_page, search=request.args.get('search', '')) }}" {% if p == page %}style="font-weight: bold;"{% endif %}>{{ p }}</a>
+            {% endfor %}
+            {% if page < total // per_page + 1 %}
+                <a href="{{ url_for('vuls', page=page+1, per_page=per_page, search=request.args.get('search', '')) }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

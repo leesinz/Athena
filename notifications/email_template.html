@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerabilities</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+}
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vulnerabilities</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>CVE</th>
+                <th>Severity</th>
+                <th>Source</th>
+                <th>Date</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vulnerability in vulnerabilities %}
+            <tr>
+                <td>{{ vulnerability.name }}</td>
+                <td>{{ vulnerability.cve }}</td>
+                <td>{{ vulnerability.severity }}</td>
+                <td>{{ vulnerability.source }}</td>
+                <td>{{ vulnerability.date }}</td>
+                <td><a href="{{ vulnerability.link }}">Link</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
