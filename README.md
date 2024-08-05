@@ -135,6 +135,10 @@ notify:
 
 ### 快速开始
 
+若无法在本地搭建项目，可直接加入下方钉钉通知群组：
+
+![1722824139064](README/1722824139064.png)
+
 seebug监控默认关闭，由于使用的是chrome.driver无头浏览器的方式，可能产生内存问题，最终导致程序中断，如果需要，去掉collectors/manager.py中self.collector_classes的注释即可：
 
 ```python
