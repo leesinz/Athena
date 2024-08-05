@@ -103,7 +103,7 @@ mysql:
   username: ""
   password: ""
 
-#通知选项，如需开启，则将enable置为true，并配置相关token。不建议使用邮件，邮件模板预计在V2.0完成
+#通知选项，如需开启，则将enable置为true，并配置相关token
 notify:
   #https://developer.work.weixin.qq.com/document/path/91770
   wxwork:
