@@ -90,12 +90,17 @@ pip install -r requirements.txt
 config.yaml
 
 ```yaml
+#https://github.com/settings/tokens
 github:
   token: ""
 
 #collectors默认为空，表示爬取所有漏洞源信息，如需指定特定源，可修改此项.可选项为['POC','Afrog','PacketStorm','Github','Seebug','OSCS','Ali','QAX','ThreatBook','Vulhub','MSF','ExploitDB']
 collectors: []
 
+#指定需要实时推送的漏洞等级，默认全部推送，如果只想推送高危和严重漏洞，置为["high", "critical"]即可
+severity_filter: ["", "low", "medium", "high", "critical"]
+
+#数据库配置
 mysql:
   host: 127.0.0.1
   port: 3306
@@ -103,20 +108,20 @@ mysql:
   username: ""
   password: ""
 
-#通知选项，如需开启，则将enable置为true，并配置相关token
+#实时推送选项，如需开启，则将enable置为true，并配置相关token
 notify:
   #https://developer.work.weixin.qq.com/document/path/91770
   wxwork:
-    enable: true
-    key: 
-    
+    enable: false
+    key:
+
   #https://open.dingtalk.com/document/robots/custom-robot-access
   dingtalk:
     enable: false
-    access_token: 
-    secret: 
-  
-  #填写相关配置信息，在每天6点会推送前一天的漏洞汇总
+    access_token:
+    secret:
+
+  #邮箱配置，在每天6点会推送前一天的漏洞汇总，注意password为授权码
   email:
     smtp_server:
     smtp_port:
@@ -126,7 +131,6 @@ notify:
     to:
       -
       -
-
 ```
 
 ### 运行逻辑
@@ -174,9 +178,9 @@ while True:
 
 注意，需要一直在后台保持运行，可配合screen等工具实现。
 
-#### 高危漏洞预警
+#### 实时漏洞预警
 
-**注意：** 只会推送severity为high及以上的漏洞。
+**注意：** 默认推送所有severity漏洞，如需更改请修改config.yaml中的severity_filter。
 
 推送内容如下：
 
@@ -207,52 +211,53 @@ def run_flask_app():
     app.run(debug=False)
 ```
 
-默认配置下，仅能本机访问，即`host = '127.0.0.1'`，若想进行远程访问，有如下两种方法：
+默认配置下，仅能本机访问，即`host = '127.0.0.1'`，若想进行远程访问，有如下几种方法：
 
 - 推荐通过nps等隧道工具实现，较为安全，但是需要配置隧道工具
 - 修改`app.run(debug=False)`为`app.run(debug=False,host='0.0.0.0')`，修改后直接对所有主机开放，简单粗暴，但是存在一定安全风险，如有意外作者概不负责！
+- 保持host为127.0.0.1，自定义路由
+
+
+
+在此提供一种通过putty搭建隧道在本地访问的方式：[ssh隧道](https://github.com/leesinz/Athena/blob/main/putty.md)
 
 
 
 前端展示共有3处路由：首页('/'或'/index')，漏洞总览('/vuls')和每日漏洞详情('/daily/[date]')
 
-
-
-##### /index
+#### /index
 
 首页有两部分，第一部分是漏洞的统计结果，有四张图表，分别统计了所有漏洞中，CVE的占比，各种severity漏洞的占比，各漏洞源漏洞的占比以及近7天来的漏洞数量变化趋势。
 
-![image-20240801235519773](README/image-20240801235519773.png)
+![image-20240806170011362](README/image-20240806170011362.png)
 
 第二部分为最新的十条漏洞数据：
 
-![image-20240801235832583](README/image-20240801235832583.png)
+![image-20240806170051695](README/image-20240806170051695.png)
 
 为了更加美观，在图表中没有采取换行的方式，如有超长字段，会隐藏一部分，鼠标悬停即可查看完整内容。
 
 同样，单击右侧link即可跳转至漏洞POC或详情页。
 
-
-
-##### /vuls
+#### /vuls
 
 该路由展示了全量的漏洞数据，并且添加了搜索功能：
 
-![image-20240802000129644](README/image-20240802000129644.png)
+![image-20240806170139600](README/image-20240806170139600.png)
 
 右上方可选每页展示的漏洞条数，通过最下方页码即可跳转。
 
 搜索框中为模糊搜索，支持全字段，例如搜索name，cve，source，severity，date等等：
 
-![image-20240802000310469](README/image-20240802000310469.png)
+![image-20240806170211117](README/image-20240806170211117.png)
 
-##### /daily/date
+#### /daily/date
 
-通过输入%Y-%m-%d形式的日期，可查询指定日期的漏洞情况，以2024-07-31为例：
+通过输入%Y-%m-%d形式的日期，可查询指定日期的漏洞情况，以2024-08-06为例：
 
-`/daily/2024-07-31`
+`/daily/2024-08-06`
 
-![image-20240802000456751](README/image-20240802000456751.png)
+![image-20240806170249731](README/image-20240806170249731.png)
 
 展示了当前日期CVE漏洞占比，各severity和source的漏洞占比，以及当天更新的所有漏洞信息。
 
