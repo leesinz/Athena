@@ -135,7 +135,7 @@ notify:
 
 ### 运行逻辑
 
-![draw](README/draw.png)
+![flow](README/flow.png)
 
 ### 快速开始
 
