@@ -1,8 +1,14 @@
+#https://github.com/settings/tokens
 github:
   token: ""
 
+#collectors默认为空，表示爬取所有漏洞源信息，如需指定特定源，可修改此项.可选项为['POC','Afrog','PacketStorm','Github','Seebug','OSCS','Ali','QAX','ThreatBook','Vulhub','MSF','ExploitDB']
 collectors: []
 
+#指定需要实时推送的漏洞等级，默认全部推送，如果只想推送高危和严重漏洞，置为["high", "critical"]即可
+severity_filter: ["", "low", "medium", "high", "critical"]
+
+#数据库配置
 mysql:
   host: 127.0.0.1
   port: 3306
@@ -10,16 +16,20 @@ mysql:
   username: ""
   password: ""
 
+#实时推送选项，如需开启，则将enable置为true，并配置相关token
 notify:
+  #https://developer.work.weixin.qq.com/document/path/91770
   wxwork:
-    enable: true
+    enable: false
     key:
 
+  #https://open.dingtalk.com/document/robots/custom-robot-access
   dingtalk:
     enable: false
     access_token:
     secret:
 
+  #邮箱配置，在每天6点会推送前一天的漏洞汇总，注意password为授权码
   email:
     smtp_server:
     smtp_port:

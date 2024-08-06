@@ -26,11 +26,13 @@ class ExploitDBCollector(VulnerabilityCollector):
         return response.json()
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         if raw_data and 'data' in raw_data:
             for item in raw_data['data']:
                 date_published = item['date_published']
-                if date_published != datetime.date.today().strftime("%Y-%m-%d"):
+                if date_published != today and date_published != yesterday:
                     continue
                 code_list = item['code']
                 cves = []
@@ -50,7 +52,7 @@ class ExploitDBCollector(VulnerabilityCollector):
                     'severity': severity,
                     'description': desc,
                     'source': self.source_name,
-                    'date': date_published,
+                    'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     'link': 'https://www.exploit-db.com/exploits/'+desc_list[0]
                 }
                 vulnerabilities.append(vulnerability)

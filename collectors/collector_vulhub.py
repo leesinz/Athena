@@ -50,7 +50,7 @@ class VulhubCollector(VulnerabilityCollector):
                             'severity': severity,
                             'description': description,
                             'source': self.source_name,
-                            'date': datetime.date.today().strftime("%Y-%m-%d"),
+                            'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             'link': 'https://github.com/vulhub/vulhub/tree/master/' + '/'.join(
                                 file['filename'].split('/')[:-1])
                         }

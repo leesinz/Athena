@@ -37,6 +37,8 @@ class AliCollector(VulnerabilityCollector):
         return cve.replace("N/A",""), description
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         soup = BeautifulSoup(raw_data, "html.parser")
         trs = soup.find_all('tr')
@@ -46,7 +48,7 @@ class AliCollector(VulnerabilityCollector):
                 a_tag = tds[0].find('a')
                 name = tds[1].get_text().strip()
                 disclosure = tds[3].get_text().strip()
-                if disclosure != datetime.date.today().strftime("%Y-%m-%d"):
+                if disclosure != today and disclosure != yesterday:
                     continue
                 vulnerability_link = a_tag['href']
                 link = "https://avd.aliyun.com" + vulnerability_link
@@ -57,7 +59,7 @@ class AliCollector(VulnerabilityCollector):
                     'severity': 'high',
                     'description': description,
                     "source": self.source_name,
-                    "date": disclosure,
+                    "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     "link": link
                 }
                 vulnerabilities.append(vulnerability)

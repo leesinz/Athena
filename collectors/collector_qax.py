@@ -31,21 +31,23 @@ class QAXCollector(VulnerabilityCollector):
         return response.json()
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         items = raw_data['data']['data']
         for item in items:
             update_time = item['update_time'].split(' ')[0]
-            if update_time != datetime.date.today().strftime("%Y-%m-%d"):
+            if update_time != today and update_time != yesterday:
                 continue
             name = item['title']
 
             vulnerability = {
                 "name": name,
                 "cve": "",
-                "severity": "",
+                "severity": "high",
                 "description": "",
                 "source": self.source_name,
-                "date": update_time,
+                "date": item['update_time'],
                 "link": "https://ti.qianxin.com/alpha-api/v2/vuln/article-notice",
             }
             vulnerabilities.append(vulnerability)

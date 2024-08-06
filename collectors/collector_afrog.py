@@ -55,7 +55,7 @@ class AfrogCollector(VulnerabilityCollector):
                             'severity': severity,
                             'description': description,
                             'source': self.source_name,
-                            'date': datetime.date.today().strftime("%Y-%m-%d"),
+                            'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             'link': 'https://github.com/zan8in/afrog/blob/main/' + file['filename']
                         }
                         vulnerabilities_dict[vulnerability['name']] = vulnerability

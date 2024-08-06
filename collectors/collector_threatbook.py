@@ -21,11 +21,13 @@ class ThreatBookCollector(VulnerabilityCollector):
         return response.json()
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         items = raw_data['data']['highrisk']
         for item in items:
             vuln_update_time = item['vuln_update_time']
-            if vuln_update_time != datetime.date.today().strftime("%Y-%m-%d"):
+            if vuln_update_time != today and vuln_update_time != yesterday:
                 continue
             id = item['id']
             name = item['vuln_name_zh']
@@ -36,7 +38,7 @@ class ThreatBookCollector(VulnerabilityCollector):
                 "severity": "high",
                 "description": "",
                 "source": self.source_name,
-                "date": vuln_update_time,
+                "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "link": link,
             }
             vulnerabilities.append(vulnerability)

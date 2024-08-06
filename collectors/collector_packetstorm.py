@@ -18,12 +18,14 @@ class PacketStormCollector(VulnerabilityCollector):
         return response.content
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         soup = BeautifulSoup(raw_data, 'html.parser')
         for item in soup.find_all("dl", id=True):
             date_tag = item.find("dd", class_="datetime")
             posted_date = date_tag.find("a")['href'].strip().split('/')[-2]
-            if posted_date != datetime.date.today().strftime("%Y-%m-%d"):
+            if posted_date != today and posted_date != yesterday:
                 continue
             name = item.find("dt").find("a").text.strip()
             cve_section = item.find("dd", class_="cve")
@@ -46,7 +48,7 @@ class PacketStormCollector(VulnerabilityCollector):
                 "severity": severity,
                 "description": desc,
                 "source": self.source_name,
-                "date": posted_date,
+                "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "link": view_link
             }
             vulnerabilities.append(vulnerability)

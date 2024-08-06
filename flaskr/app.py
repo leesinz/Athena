@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify
-from config import cfg
+from flask import Flask, render_template, request
 from database.db_class import MySQLDatabase
 
 app = Flask(__name__)
@@ -33,11 +32,11 @@ def index():
         cve_data = mysql_db.fetch_results(cve_data_query)[0]
 
         trend_data_query = """
-            SELECT date, COUNT(*) as count
+            SELECT DATE(date) as date, COUNT(*) as count
             FROM vulnerabilities
             WHERE date >= CURDATE() - INTERVAL 7 DAY
-            GROUP BY date
-            ORDER BY date
+            GROUP BY DATE(date)
+            ORDER BY DATE(date)
         """
         trend_data = mysql_db.fetch_results(trend_data_query)
 
@@ -89,7 +88,7 @@ def vuls():
 @app.route('/daily/<date>')
 def daily(date):
     try:
-        vulnerabilities_query = "SELECT * FROM vulnerabilities WHERE date = %s ORDER BY date DESC"
+        vulnerabilities_query = "SELECT * FROM vulnerabilities WHERE DATE(date) = %s ORDER BY date DESC"
         vulnerabilities = mysql_db.fetch_results(vulnerabilities_query, (date,))
 
         severity_data_query = """
@@ -100,15 +99,15 @@ def daily(date):
                    SUM(CASE WHEN severity = 'critical' THEN 1 ELSE 0 END) as critical_count,
                    SUM(CASE WHEN severity = '' THEN 1 ELSE 0 END) as none_count
             FROM vulnerabilities
-            WHERE date = %s
+            WHERE DATE(date) = %s
         """
         severity_data = mysql_db.fetch_results(severity_data_query, (date,))[0]
 
-        source_data_query = "SELECT source, COUNT(*) as count FROM vulnerabilities WHERE date = %s GROUP BY source"
+        source_data_query = "SELECT source, COUNT(*) as count FROM vulnerabilities WHERE DATE(date) = %s GROUP BY source"
         source_data = mysql_db.fetch_results(source_data_query, (date,))
 
 
-        cve_data_query = "SELECT COUNT(*) as total, SUM(CASE WHEN cve <> '' THEN 1 ELSE 0 END) as cve_count FROM vulnerabilities WHERE date = %s"
+        cve_data_query = "SELECT COUNT(*) as total, SUM(CASE WHEN cve <> '' THEN 1 ELSE 0 END) as cve_count FROM vulnerabilities WHERE DATE(date) = %s"
         cve_data = mysql_db.fetch_results(cve_data_query, (date,))[0]
 
         vuln_count = len(vulnerabilities)

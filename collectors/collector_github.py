@@ -23,13 +23,16 @@ class GitHubCollector(VulnerabilityCollector):
         return response.json()
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities_dict = {}
         for repo in raw_data['items']:
             if repo['fork']:
                 continue
             pushed_at = repo['pushed_at'].split('T')[0]
-            if pushed_at != datetime.date.today().strftime("%Y-%m-%d"):
+            if pushed_at != today and pushed_at != yesterday:
                 continue
+            push_date = datetime.datetime.strptime(repo['pushed_at'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
             cves = extract_cve(repo['name'])
             if not cves:
                 continue
@@ -47,7 +50,7 @@ class GitHubCollector(VulnerabilityCollector):
                 'severity': severity,
                 'description': desc,
                 'source': self.source_name,
-                'date': pushed_at,
+                'date': push_date,
                 'link': repo['html_url']
             }
             vulnerabilities_dict[vulnerability['name']] = vulnerability

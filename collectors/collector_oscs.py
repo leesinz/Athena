@@ -1,4 +1,5 @@
 import datetime
+from dateutil import parser
 import requests
 from .decorators import retry
 from .base_collector import VulnerabilityCollector
@@ -41,12 +42,15 @@ class OSCSCollector(VulnerabilityCollector):
         return cve, description, severity
 
     def parse_data(self, raw_data):
+        today = datetime.date.today().strftime("%Y-%m-%d")
+        yesterday = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         vulnerabilities = []
         items = raw_data['data']['data']
         for item in items:
             public_time = item['public_time'].split('T')[0]
-            if public_time != datetime.date.today().strftime("%Y-%m-%d"):
+            if public_time != today and public_time != yesterday:
                 continue
+            date = parser.parse(item['public_time']).strftime("%Y-%m-%d %H:%M:%S")
             name = item['title']
             link = item['url']
             mps = item['mps']
@@ -57,7 +61,7 @@ class OSCSCollector(VulnerabilityCollector):
                 'severity': infos[2],
                 'description': infos[1],
                 "source": self.source_name,
-                "date": public_time,
+                "date": date,
                 "link": link,
             }
             vulnerabilities.append(vulnerability)

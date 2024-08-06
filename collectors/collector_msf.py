@@ -66,7 +66,7 @@ class MSFCollector(VulnerabilityCollector):
                             'severity': 'high',
                             'description': self.extract_info(file['filename'])[2],
                             'source': self.source_name,
-                            'date': datetime.date.today().strftime("%Y-%m-%d"),
+                            'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             'link': "https://raw.githubusercontent.com/rapid7/metasploit-framework/master/" + file[
                                 'filename']
                         }

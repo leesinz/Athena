@@ -24,8 +24,9 @@ def gather_data():
 
 
 def filter_high_risk_vuls(vulnerabilities):
-    print("Filtering high risk vulnerabilities")
-    high_risk_num = 0
+    print("Filtering vulnerabilities")
+    selected_severity_list = cfg.get('severity_filter')
+    selected_severity_num = 0
     db = MySQLDatabase()
     for vulnerability in vulnerabilities:
         vulnerability = {key: html.unescape(value) for key, value in vulnerability.items()}
@@ -38,14 +39,13 @@ def filter_high_risk_vuls(vulnerabilities):
 
         db.insert_vulnerability(vulnerability)
 
-        high_risk_list = ['high', 'critical']
-        if vulnerability['severity'] in high_risk_list or vulnerability['source'] == 'QAX':
-            high_risk_num += 1
+        if vulnerability['severity'] in selected_severity_list:
+            selected_severity_num += 1
             content = ""
             for key, value in vulnerability.items():
                 if value:
                     content += f"{key}: {value}\n"
             content = content.rstrip("\n")
             send_realtime_notifications(content)
-    print(f"High risk vulnerabilities found: {high_risk_num}\n")
+    print(f"Selected severity vulnerabilities found: {selected_severity_num}\n\n")
 
