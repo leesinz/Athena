@@ -11,7 +11,7 @@ def create_db():
     severity VARCHAR(20),
     description TEXT CHARACTER SET utf8mb4,
     source VARCHAR(50),
-    date DATE,
+    date DATETIME,
     link VARCHAR(255)
 ) CHARACTER SET utf8mb4;
         """
