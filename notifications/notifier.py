@@ -1,7 +1,8 @@
 from config import cfg
 from database.db_class import MySQLDatabase
-from notifications.mail import email_notification
 from notifications.dingtalk import dingtalk_notification
+from notifications.lark import lark_notification
+from notifications.mail import email_notification
 from notifications.wxwork import wxwork_notification
 
 
@@ -11,6 +12,8 @@ def send_realtime_notifications(content):
         wxwork_notification(notify['wxwork']['key'], content)
     if notify['dingtalk']['enable']:
         dingtalk_notification(notify['dingtalk']['access_token'], notify['dingtalk']['secret'], content)
+    if notify['lark']['enable']:
+        lark_notification(notify['lark']['access_token'], notify['lark']['secret'], content)
 
 
 def send_daily_notifications(date):
