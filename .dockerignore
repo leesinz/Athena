@@ -1,0 +1,5 @@
+*.md
+Dockerfile
+tests/
+test.py
+README/
