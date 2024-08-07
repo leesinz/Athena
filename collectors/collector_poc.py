@@ -16,9 +16,9 @@ class POCCollector(VulnerabilityCollector):
         self.headers = poc_headers
 
     @retry()
-    def fetch_data(self):
+    def fetch_data(self, timeout):
         since = (datetime.datetime.utcnow() - datetime.timedelta(days=1)).isoformat() + 'Z'
-        response = requests.get(self.source_url, params={'since': since}, headers=self.headers)
+        response = requests.get(self.source_url, params={'since': since}, headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.json()
 

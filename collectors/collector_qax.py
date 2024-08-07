@@ -25,8 +25,8 @@ class QAXCollector(VulnerabilityCollector):
         self.data = qax_data
 
     @retry()
-    def fetch_data(self):
-        response = requests.post(self.source_url,headers=self.headers,json=self.data)
+    def fetch_data(self, timeout):
+        response = requests.post(self.source_url, headers=self.headers, json=self.data, timeout=timeout)
         response.raise_for_status()
         return response.json()
 

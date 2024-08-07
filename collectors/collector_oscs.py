@@ -16,14 +16,14 @@ class OSCSCollector(VulnerabilityCollector):
         self.data = oscs_data
 
     @retry()
-    def fetch_data(self):
-        response = requests.post(self.source_url, json=self.data)
+    def fetch_data(self, timeout):
+        response = requests.post(self.source_url, json=self.data, timeout=timeout)
         response.raise_for_status()
         return response.json()
 
     @staticmethod
     @retry()
-    def extract_info(mps):
+    def extract_info(mps, timeout):
         url = "https://www.oscs1024.com/oscs/v1/vdb/info"
         headers = {
             "Host": "www.oscs1024.com",
@@ -33,7 +33,7 @@ class OSCSCollector(VulnerabilityCollector):
         data = {
             "vuln_no": mps
         }
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, timeout=timeout)
         response.raise_for_status()
         data = response.json()['data'][0]
         cve = data['cve_id']

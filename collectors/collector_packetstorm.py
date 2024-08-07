@@ -12,8 +12,8 @@ class PacketStormCollector(VulnerabilityCollector):
         super().__init__('PacketStorm', packetstorm_url)
 
     @retry()
-    def fetch_data(self):
-        response = requests.get(self.source_url)
+    def fetch_data(self, timeout):
+        response = requests.get(self.source_url, timeout=timeout)
         response.raise_for_status()
         return response.content
 

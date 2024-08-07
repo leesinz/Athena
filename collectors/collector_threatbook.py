@@ -15,8 +15,8 @@ class ThreatBookCollector(VulnerabilityCollector):
         self.headers = threatbook_headers
 
     @retry()
-    def fetch_data(self):
-        response = requests.get(self.source_url,headers=self.headers)
+    def fetch_data(self, timeout):
+        response = requests.get(self.source_url,headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.json()
 

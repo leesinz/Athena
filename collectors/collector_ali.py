@@ -11,15 +11,15 @@ class AliCollector(VulnerabilityCollector):
         super().__init__('Aliyun', ali_url)
 
     @retry()
-    def fetch_data(self):
-        response = requests.get(self.source_url)
+    def fetch_data(self, timeout):
+        response = requests.get(self.source_url, timeout=timeout)
         response.raise_for_status()
         return response.text
 
     @staticmethod
     @retry()
-    def extract_info(link):
-        res = requests.get(link)
+    def extract_info(link, timeout):
+        res = requests.get(link, timeout=timeout)
         res.raise_for_status()
 
         soup = BeautifulSoup(res.content, 'html.parser')

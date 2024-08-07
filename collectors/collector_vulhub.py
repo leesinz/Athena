@@ -16,16 +16,16 @@ class VulhubCollector(VulnerabilityCollector):
         self.headers = vulhub_headers
 
     @retry()
-    def fetch_data(self):
+    def fetch_data(self, timeout):
         since = (datetime.datetime.utcnow() - datetime.timedelta(days=1)).isoformat() + 'Z'
-        response = requests.get(self.source_url, params={'since': since}, headers=self.headers)
+        response = requests.get(self.source_url, params={'since': since}, headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.json()
 
     @retry()
-    def extract_name(self, file_path):
+    def extract_name(self, file_path, timeout):
         url = f"https://raw.githubusercontent.com/vulhub/vulhub/master/{file_path}/README.zh-cn.md"
-        response = requests.get(url, headers=self.headers)
+        response = requests.get(url, headers=self.headers, timeout=timeout)
         body = response.text
         title = body.split('\n', 1)[0].split('#')[1].strip()
         return title

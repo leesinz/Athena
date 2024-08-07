@@ -39,11 +39,3 @@ class VulnerabilityManager:
             vulnerabilities = collector.collect_vulnerabilities()
             all_vulnerabilities.extend(vulnerabilities)
         return all_vulnerabilities
-
-    def store_vulnerabilities(self, vulnerabilities):
-        # 这里存储漏洞到数据库
-        pass
-
-    def process_vulnerabilities(self, selected_collectors=None):
-        vulnerabilities = self.collect_vulnerabilities(selected_collectors)
-        self.store_vulnerabilities(vulnerabilities)

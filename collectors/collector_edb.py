@@ -5,6 +5,7 @@ from .decorators import retry
 from .utils import process_cves
 from .base_collector import VulnerabilityCollector
 
+
 class ExploitDBCollector(VulnerabilityCollector):
     def __init__(self):
         edb_base_url = "https://www.exploit-db.com/?columns%5B9%5D%5Bname%5D=id&order%5B0%5D%5Bcolumn%5D=9&start={}&length={}"
@@ -20,8 +21,8 @@ class ExploitDBCollector(VulnerabilityCollector):
         self.headers = edb_headers
 
     @retry()
-    def fetch_data(self):
-        response = requests.get(self.source_url, headers=self.headers)
+    def fetch_data(self, timeout):
+        response = requests.get(self.source_url, headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.json()
 
@@ -53,7 +54,7 @@ class ExploitDBCollector(VulnerabilityCollector):
                     'description': desc,
                     'source': self.source_name,
                     'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    'link': 'https://www.exploit-db.com/exploits/'+desc_list[0]
+                    'link': 'https://www.exploit-db.com/exploits/' + desc_list[0]
                 }
                 vulnerabilities.append(vulnerability)
         return vulnerabilities

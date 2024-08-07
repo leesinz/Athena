@@ -15,10 +15,10 @@ class GitHubCollector(VulnerabilityCollector):
         self.headers = github_headers
 
     @retry()
-    def fetch_data(self):
+    def fetch_data(self, timeout):
         year = datetime.datetime.now().year
         params = {'q': f'CVE-{year}', 'sort': 'updated', 'per_page': 30, 'page': 1}
-        response = requests.get(self.source_url, headers=self.headers, params=params)
+        response = requests.get(self.source_url, headers=self.headers, params=params, timeout=timeout)
         response.raise_for_status()
         return response.json()
 

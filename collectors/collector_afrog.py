@@ -15,17 +15,17 @@ class AfrogCollector(VulnerabilityCollector):
         self.headers = afrog_headers
 
     @retry()
-    def fetch_data(self):
+    def fetch_data(self, timeout):
         since = (datetime.datetime.utcnow() - datetime.timedelta(days=1)).isoformat() + 'Z'
-        response = requests.get(self.source_url, params={'since': since}, headers=self.headers)
+        response = requests.get(self.source_url, params={'since': since}, headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.json()
 
     @staticmethod
     @retry()
-    def extract_info(file_path):
+    def extract_info(file_path, timeout):
         url = f"https://raw.githubusercontent.com/zan8in/afrog/master/{file_path}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=timeout)
         body = response.text
         yaml_content = yaml.safe_load(body)
         name = yaml_content['info']['name']
