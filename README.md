@@ -121,6 +121,12 @@ notify:
     access_token:
     secret:
 
+  #https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot#9fe10f9b
+  feishu:
+    enable: false
+    webhook:
+    secret:
+
   #邮箱配置，在每天6点会推送前一天的漏洞汇总，注意password为授权码
   email:
     smtp_server:
@@ -131,6 +137,7 @@ notify:
     to:
       -
       -
+
 ```
 
 ### 运行逻辑
