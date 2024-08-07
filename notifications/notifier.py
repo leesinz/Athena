@@ -3,6 +3,7 @@ from database.db_class import MySQLDatabase
 from notifications.mail import email_notification
 from notifications.dingtalk import dingtalk_notification
 from notifications.wxwork import wxwork_notification
+from notifications.feishu import feishu_notification
 
 
 def send_realtime_notifications(content):
@@ -11,6 +12,8 @@ def send_realtime_notifications(content):
         wxwork_notification(notify['wxwork']['key'], content)
     if notify['dingtalk']['enable']:
         dingtalk_notification(notify['dingtalk']['access_token'], notify['dingtalk']['secret'], content)
+    if notify['feishu']['enable']:
+        feishu_notification(notify['feishu']['webhook'], notify['feishu']['secret'], content)
 
 
 def send_daily_notifications(date):
