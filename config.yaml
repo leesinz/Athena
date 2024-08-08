@@ -6,6 +6,7 @@ global:
 #https://github.com/settings/tokens
 github:
   token: ""
+  proxy: ""
 
 #collectors默认为空，表示爬取所有漏洞源信息，如需指定特定源，可修改此项.可选项为['POC','Afrog','PacketStorm','Github','Seebug','OSCS','Ali','QAX','ThreatBook','Vulhub','MSF','ExploitDB']
 collectors: []
