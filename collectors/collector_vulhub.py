@@ -24,7 +24,10 @@ class VulhubCollector(VulnerabilityCollector):
 
     @retry()
     def extract_name(self, file_path, timeout):
-        url = f"https://raw.githubusercontent.com/vulhub/vulhub/master/{file_path}/README.zh-cn.md"
+        if cfg['github']['proxy'] == '':
+            url = f"https://raw.githubusercontent.com/vulhub/vulhub/master/{file_path}/README.zh-cn.md"
+        else:
+            url = f"{cfg['github']['proxy']}https://raw.githubusercontent.com/vulhub/vulhub/master/{file_path}/README.zh-cn.md"
         response = requests.get(url, headers=self.headers, timeout=timeout)
         body = response.text
         title = body.split('\n', 1)[0].split('#')[1].strip()

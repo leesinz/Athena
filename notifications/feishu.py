@@ -1,8 +1,9 @@
-import hashlib
 import base64
+import hashlib
 import hmac
-import requests
 import time
+
+import requests
 
 
 def gen_sign(timestamp, secret):
@@ -15,16 +16,16 @@ def gen_sign(timestamp, secret):
 def feishu_notification(webhook, secret, content):
     webhook_url = 'https://open.feishu.cn/open-apis/bot/v2/hook/' + webhook
     timestamp = str(int(time.time()))
-    sign = gen_sign(timestamp, secret)
     headers = {
         "Content-Type": "application/json"
     }
     data = {
         "timestamp": timestamp,
-        "sign": sign,
         "msg_type": "text",
         "content": {
             "text": content
         }
     }
+    if secret:
+        data['sign'] = gen_sign(timestamp, secret)
     requests.post(webhook_url, json=data, headers=headers)

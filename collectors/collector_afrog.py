@@ -24,7 +24,10 @@ class AfrogCollector(VulnerabilityCollector):
     @staticmethod
     @retry()
     def extract_info(file_path, timeout):
-        url = f"https://raw.githubusercontent.com/zan8in/afrog/master/{file_path}"
+        if cfg['github']['proxy'] == '':
+            url = f"https://raw.githubusercontent.com/zan8in/afrog/master/{file_path}"
+        else:
+            url = f"{cfg['github']['proxy']}https://raw.githubusercontent.com/zan8in/afrog/master/{file_path}"
         response = requests.get(url, timeout=timeout)
         body = response.text
         yaml_content = yaml.safe_load(body)
