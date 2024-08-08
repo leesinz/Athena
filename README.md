@@ -90,6 +90,11 @@ pip install -r requirements.txt
 config.yaml
 
 ```yaml
+global:
+  max_retries: 3
+  delay: 3
+  timeout: 30
+
 #https://github.com/settings/tokens
 github:
   token: ""
