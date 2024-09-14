@@ -31,16 +31,20 @@ def main():
 
     last_sent_date = None
     while True:
-        current_time = datetime.datetime.now()
-        current_date = current_time.date()
+        try:
+            current_time = datetime.datetime.now()
+            current_date = current_time.date()
 
-        if current_time.hour == 6 and last_sent_date != current_date:
-            daily_task()
-            last_sent_date = current_date
+            if current_time.hour == 6 and last_sent_date != current_date:
+                daily_task()
+                last_sent_date = current_date
 
-        vulnerabilities = gather_data()
-        filter_high_risk_vuls(vulnerabilities)
-        time.sleep(600)
+            vulnerabilities = gather_data()
+            filter_high_risk_vuls(vulnerabilities)
+            time.sleep(600)
+        except Exception as e:
+            print(f"Error: {e}")
+            time.sleep(60)
 
 
 if __name__ == "__main__":
